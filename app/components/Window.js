@@ -1,12 +1,9 @@
 import React from 'react'
 import { Button, Modal, Form, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 
-export default class Window extends React.Component{
-  constructor(props){
-    super(props)
-  }
-  render() {
-    return(
+export default class Window extends React.Component {
+  render () {
+    return (
       <Modal show={this.props.showModal} onHide={this.props.close}>
         <Modal.Header closeButton>
           <Modal.Title>Add a Recipe</Modal.Title>
@@ -15,7 +12,7 @@ export default class Window extends React.Component{
           <Form>
             <FormGroup controlId="formControlsText">
               <ControlLabel>Recipe</ControlLabel>
-              <FormControl type="text" placeholder="Recipe Name" onChange={this.props.handleChangeRecipe} value={this.props.editTitle}/>
+              <FormControl type="text" placeholder="Recipe Name" onChange={this.props.handleChangeRecipe} value={this.props.editTitle} />
             </FormGroup>
             <FormGroup controlId="formControlsTextarea">
               <ControlLabel>Ingredients</ControlLabel>
@@ -31,7 +28,6 @@ export default class Window extends React.Component{
     )
   }
 }
-
 
 Window.propTypes = {
   showModal: React.PropTypes.bool.isRequired,

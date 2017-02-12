@@ -1,13 +1,9 @@
 import React from 'react'
 import { Button, Modal, Form, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 
-export default class WindowEdit extends React.Component{
-  constructor(props){
-    super(props)
-  }
-  render() {
-
-    return(
+export default class WindowEdit extends React.Component {
+  render () {
+    return (
       <Modal show={this.props.showModal} onHide={this.props.close}>
         <Modal.Header closeButton>
           <Modal.Title>Edit a Recipe</Modal.Title>
@@ -16,7 +12,7 @@ export default class WindowEdit extends React.Component{
           <Form>
             <FormGroup controlId="formControlsText">
               <ControlLabel>Recipe</ControlLabel>
-              <FormControl type="text" placeholder="Recipe Name" onChange={this.props.handleChangeRecipe} value={this.props.editTitle}/>
+              <FormControl type="text" placeholder="Recipe Name" onChange={this.props.handleChangeRecipe} value={this.props.editTitle} />
             </FormGroup>
             <FormGroup controlId="formControlsTextarea">
               <ControlLabel>Ingredients</ControlLabel>
@@ -25,7 +21,7 @@ export default class WindowEdit extends React.Component{
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle="success" onClick={() => this.props.update(this.props.index)}>Edit</Button>
+          <Button bsStyle="success" onClick={() => this.props.update(this.props.index)}>Update</Button>
           <Button bsStyle="danger" onClick={this.props.close}>Cancel</Button>
         </Modal.Footer>
       </Modal>
