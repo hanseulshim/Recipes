@@ -3,6 +3,7 @@ import Window from '../components/Window'
 import WindowEdit from '../components/WindowEdit'
 import Recipe from '../components/Recipe'
 import { Button } from 'react-bootstrap'
+import axios from 'axios'
 
 export default class WindowContainer extends React.Component {
   constructor () {
@@ -27,14 +28,54 @@ export default class WindowContainer extends React.Component {
     this.update = this.update.bind(this)
   }
 
+  componentDidMount() {
+    axios.get('/getRecipes')
+      .then( res => {
+        console.log("Received", res)
+        var data = res.data.map(data => [data.name, data.ingredients])
+        this.setState({
+          recipe: data
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   addRecipe () {
     this.setState({
-      showModal: false,
-      recipeTitleArray: this.state.recipeTitleArray.concat(this.state.recipeTitle),
-      ingredientsArray: this.state.ingredientsArray.concat([this.state.ingredients]),
-      recipe: this.state.recipe.concat([[this.state.recipeTitle, this.state.ingredients]]),
-      editIngredient: ''
+      showModal: false
+      // recipeTitleArray: this.state.recipeTitleArray.concat(this.state.recipeTitle),
+      // ingredientsArray: this.state.ingredientsArray.concat([this.state.ingredients]),
+      // recipe: this.state.recipe.concat([[this.state.recipeTitle, this.state.ingredients]]),
+      // editIngredient: ''
     })
+
+    axios.post('/addRecipe', {
+      name: this.state.recipeTitle,
+      ingredients: this.state.ingredients
+    })
+    .then( res => {
+      console.log(res);
+    })
+    .catch( err => {
+      console.log(err);
+    }).then(
+      axios.get('/getRecipes')
+      .then( res => {
+        console.log("Received", res)
+        var data = res.data.map(data => [data.name, data.ingredients])
+        this.setState({
+          recipe: data
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    )
+
+
+
   }
 
   close () {

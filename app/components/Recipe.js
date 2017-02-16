@@ -3,6 +3,7 @@ import { Accordion, Button, Panel, ListGroup, ListGroupItem } from 'react-bootst
 
 export default class Recipe extends React.Component {
   render () {
+    console.log(this.props.recipe)
     let panel = this.props.recipe.map((title, index) => {
       let list = title[1].map((list, index) => <ListGroupItem key={index}>{list}</ListGroupItem>)
       return (
