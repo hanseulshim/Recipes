@@ -25,9 +25,9 @@ export default class WindowContainer extends React.Component {
     this.update = this.update.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     axios.get('/getRecipes')
-      .then( res => {
+      .then(res => {
         let data = res.data.map(data => [data.name, data.ingredients])
         this.setState({
           recipe: data
@@ -47,17 +47,16 @@ export default class WindowContainer extends React.Component {
       name: this.state.recipeTitle,
       ingredients: this.state.ingredients
     })
-    .then( res => {
+    .then(res => {
       let recipe = this.state.recipe
       recipe.push([res.data.name, res.data.ingredients])
       this.setState({
         recipe: recipe
       })
     })
-    .catch( err => {
-      console.log('Error in add', err);
+    .catch(err => {
+      console.log('Error in add', err)
     })
-
   }
 
   close () {
@@ -77,13 +76,13 @@ export default class WindowContainer extends React.Component {
     axios.post('/deleteRecipe', {
       name: deleteRecipe[0]
     })
-    .then( res => {
+    .then(res => {
       console.log('Response for delete', res)
       this.setState({
         recipe: tempRecipe
       })
     })
-    .catch( err => {
+    .catch(err => {
       console.log('Error in delete', err)
     })
   }
@@ -140,10 +139,10 @@ export default class WindowContainer extends React.Component {
             : null
         }
         <div className="jumbotron">
-          <Recipe 
+          <Recipe
             deleteRecipe={this.deleteRecipe}
             editRecipe={this.editRecipe}
-            recipe={this.state.recipe} 
+            recipe={this.state.recipe}
           />
         </div>
         <Button
