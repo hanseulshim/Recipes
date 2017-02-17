@@ -22,22 +22,21 @@ app.get('/', (req, res) => {
 app.post('/addRecipe', (req, res) => {
   var data = new Recipebook(req.body)
   data.save((err, data) => {
-    err ? console.log("Error", err) : console.log("Saved", data)
+    err ? console.log("Error in add", err) : res.send(data)
   })
 })
 
 app.get('/getRecipes', (req,res) => {
   Recipebook.find((err,data) => {
-     err ? console.log("Error", err) : res.send(data)
-     // if(err){
-     //  console.log("Error", err)
-     // }
-     // else{
-     //  console.log("getting")
-     //  console.log(data)
-     //  res.send(data)
-     // }
+     err ? console.log("Error in get", err) : res.send(data)
   })
+})
+
+app.post('/deleteRecipe', (req,res) => {
+  var name = req.body.name
+  Recipebook.find({name: name}).remove( (err, data) =>
+    err ? console.log('Error in delete', err) : res.send(data)
+  )
 })
 
 app.listen(port)

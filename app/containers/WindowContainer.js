@@ -1,6 +1,5 @@
 import React from 'react'
 import Window from '../components/Window'
-import WindowEdit from '../components/WindowEdit'
 import Recipe from '../components/Recipe'
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
@@ -11,9 +10,7 @@ export default class WindowContainer extends React.Component {
     this.state = {
       showModal: false,
       recipeTitle: 'Untitled',
-      recipeTitleArray: [],
       ingredients: [],
-      ingredientsArray: [],
       recipe: [],
       showEdit: false
     }
@@ -31,24 +28,19 @@ export default class WindowContainer extends React.Component {
   componentDidMount() {
     axios.get('/getRecipes')
       .then( res => {
-        console.log("Received", res)
-        var data = res.data.map(data => [data.name, data.ingredients])
+        let data = res.data.map(data => [data.name, data.ingredients])
         this.setState({
           recipe: data
         })
       })
       .catch(err => {
-        console.log(err)
+        console.log('Error in mounting', err)
       })
   }
 
   addRecipe () {
     this.setState({
       showModal: false
-      // recipeTitleArray: this.state.recipeTitleArray.concat(this.state.recipeTitle),
-      // ingredientsArray: this.state.ingredientsArray.concat([this.state.ingredients]),
-      // recipe: this.state.recipe.concat([[this.state.recipeTitle, this.state.ingredients]]),
-      // editIngredient: ''
     })
 
     axios.post('/addRecipe', {
@@ -56,25 +48,15 @@ export default class WindowContainer extends React.Component {
       ingredients: this.state.ingredients
     })
     .then( res => {
-      console.log(res);
+      let recipe = this.state.recipe
+      recipe.push([res.data.name, res.data.ingredients])
+      this.setState({
+        recipe: recipe
+      })
     })
     .catch( err => {
-      console.log(err);
-    }).then(
-      axios.get('/getRecipes')
-      .then( res => {
-        console.log("Received", res)
-        var data = res.data.map(data => [data.name, data.ingredients])
-        this.setState({
-          recipe: data
-        })
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    )
-
-
+      console.log('Error in add', err);
+    })
 
   }
 
@@ -91,9 +73,18 @@ export default class WindowContainer extends React.Component {
 
   deleteRecipe (index) {
     let tempRecipe = this.state.recipe.slice()
-    tempRecipe.splice(index, 1)
-    this.setState({
-      recipe: tempRecipe
+    let deleteRecipe = tempRecipe.splice(index, 1)[0]
+    axios.post('/deleteRecipe', {
+      name: deleteRecipe[0]
+    })
+    .then( res => {
+      console.log('Response for delete', res)
+      this.setState({
+        recipe: tempRecipe
+      })
+    })
+    .catch( err => {
+      console.log('Error in delete', err)
     })
   }
 
@@ -131,14 +122,16 @@ export default class WindowContainer extends React.Component {
           addRecipe={this.addRecipe}
           handleChangeRecipe={this.handleChangeRecipe}
           handleChangeIngredient={this.handleChangeIngredient}
+          buttonText="Add"
         />
         {this.state.showEdit
-          ? <WindowEdit
+          ? <Window
             showModal={this.state.showEdit}
             close={this.close}
             addRecipe={this.addRecipe}
             handleChangeRecipe={this.handleChangeRecipe}
             handleChangeIngredient={this.handleChangeIngredient}
+            buttonText="Edit"
             editTitle={this.state.recipeTitle}
             editIngredient={this.state.ingredients}
             update={this.update}
@@ -147,7 +140,11 @@ export default class WindowContainer extends React.Component {
             : null
         }
         <div className="jumbotron">
-          <Recipe deleteRecipe={this.deleteRecipe} editRecipe={this.editRecipe} recipe={this.state.recipe} />
+          <Recipe 
+            deleteRecipe={this.deleteRecipe}
+            editRecipe={this.editRecipe}
+            recipe={this.state.recipe} 
+          />
         </div>
         <Button
           bsStyle="primary"

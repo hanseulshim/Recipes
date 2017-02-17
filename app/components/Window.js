@@ -2,11 +2,12 @@ import React from 'react'
 import { Button, Modal, Form, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 
 export default class Window extends React.Component {
+
   render () {
     return (
       <Modal show={this.props.showModal} onHide={this.props.close}>
         <Modal.Header closeButton>
-          <Modal.Title>Add a Recipe</Modal.Title>
+          <Modal.Title>{this.props.buttonText} a Recipe</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -21,7 +22,11 @@ export default class Window extends React.Component {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle="success" onClick={this.props.addRecipe}>Add</Button>
+          {
+            this.props.buttonText === 'Add'
+            ? <Button bsStyle="success" onClick={this.props.addRecipe}>Add</Button>
+            : <Button bsStyle="success" onClick={() => this.props.update(this.props.index)}>Update</Button>
+          }
           <Button bsStyle="danger" onClick={this.props.close}>Cancel</Button>
         </Modal.Footer>
       </Modal>
