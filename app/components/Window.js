@@ -25,7 +25,7 @@ export default class Window extends React.Component {
           {
             this.props.buttonText === 'Add'
             ? <Button bsStyle="success" onClick={this.props.addRecipe}>Add</Button>
-            : <Button bsStyle="success" onClick={() => this.props.update(this.props.index)}>Update</Button>
+            : <Button bsStyle="success" onClick={() => this.props.updateRecipe(this.props.index)}>Update</Button>
           }
           <Button bsStyle="danger" onClick={this.props.close}>Cancel</Button>
         </Modal.Footer>

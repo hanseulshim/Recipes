@@ -22,7 +22,7 @@ export default class WindowContainer extends React.Component {
     this.addRecipe = this.addRecipe.bind(this)
     this.deleteRecipe = this.deleteRecipe.bind(this)
     this.editRecipe = this.editRecipe.bind(this)
-    this.update = this.update.bind(this)
+    this.updateRecipe = this.updateRecipe.bind(this)
   }
 
   componentDidMount () {
@@ -37,12 +37,10 @@ export default class WindowContainer extends React.Component {
         console.log('Error in mounting', err)
       })
   }
-
   addRecipe () {
     this.setState({
       showModal: false
     })
-
     axios.post('/addRecipe', {
       name: this.state.recipeTitle,
       ingredients: this.state.ingredients
@@ -58,26 +56,22 @@ export default class WindowContainer extends React.Component {
       console.log('Error in add', err)
     })
   }
-
   close () {
     this.setState({
       showModal: false,
       showEdit: false
     })
   }
-
   open () {
     this.setState({ showModal: true })
   }
-
   deleteRecipe (index) {
-    let tempRecipe = this.state.recipe.slice()
+    let tempRecipe = this.state.recipe
     let deleteRecipe = tempRecipe.splice(index, 1)[0]
     axios.post('/deleteRecipe', {
       name: deleteRecipe[0]
     })
     .then(res => {
-      console.log('Response for delete', res)
       this.setState({
         recipe: tempRecipe
       })
@@ -86,7 +80,6 @@ export default class WindowContainer extends React.Component {
       console.log('Error in delete', err)
     })
   }
-
   editRecipe (index) {
     let tempRecipe = this.state.recipe.slice(index, index + 1)[0]
     this.setState({
@@ -96,22 +89,29 @@ export default class WindowContainer extends React.Component {
       index: index
     })
   }
-  update (index) {
-    let tempRecipe = this.state.recipe
-    tempRecipe[index] = [this.state.recipeTitle, [this.state.ingredients]]
-    this.setState({
-      recipe: tempRecipe,
-      showEdit: false
+  updateRecipe (index) {
+    let recipe = this.state.recipe
+    recipe[index] = [this.state.recipeTitle, this.state.ingredients]
+    axios.post('/updateRecipe', {
+      name: this.state.recipeTitle,
+      ingredients: this.state.ingredients
+    })
+    .then(res => {
+      this.setState({
+        recipe: recipe,
+        showEdit: false
+      })
+    })
+    .catch(err => {
+      console.log('Error in add', err)
     })
   }
   handleChangeRecipe (e) {
     this.setState({ recipeTitle: e.target.value })
   }
-
   handleChangeIngredient (e) {
     this.setState({ ingredients: e.target.value.split(',') })
   }
-
   render () {
     return (
       <div className="container">
@@ -133,7 +133,7 @@ export default class WindowContainer extends React.Component {
             buttonText="Edit"
             editTitle={this.state.recipeTitle}
             editIngredient={this.state.ingredients}
-            update={this.update}
+            updateRecipe={this.updateRecipe}
             index={this.state.index}
             />
             : null
