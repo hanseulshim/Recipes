@@ -43,7 +43,7 @@ export default class WindowContainer extends React.Component {
     })
     axios.post('/addRecipe', {
       name: this.state.recipeTitle,
-      ingredients: this.state.ingredients
+      ingredients: this.state.ingredients.split(',')
     })
     .then(res => {
       let recipe = this.state.recipe
@@ -66,7 +66,7 @@ export default class WindowContainer extends React.Component {
     this.setState({ showModal: true })
   }
   deleteRecipe (index) {
-    let tempRecipe = this.state.recipe
+    let tempRecipe = this.state.recipe.slice()
     let deleteRecipe = tempRecipe.splice(index, 1)[0]
     axios.post('/deleteRecipe', {
       name: deleteRecipe[0]
@@ -90,11 +90,12 @@ export default class WindowContainer extends React.Component {
     })
   }
   updateRecipe (index) {
-    let recipe = this.state.recipe
-    recipe[index] = [this.state.recipeTitle, this.state.ingredients]
+    let recipe = this.state.recipe.slice()
+    recipe[index] = [this.state.recipeTitle, this.state.ingredients.split(',')]
     axios.post('/updateRecipe', {
-      name: this.state.recipeTitle,
-      ingredients: this.state.ingredients
+      searchName: this.state.recipe[index][0],
+      newName: this.state.recipeTitle,
+      ingredients: this.state.ingredients.split(',')
     })
     .then(res => {
       this.setState({
@@ -110,7 +111,7 @@ export default class WindowContainer extends React.Component {
     this.setState({ recipeTitle: e.target.value })
   }
   handleChangeIngredient (e) {
-    this.setState({ ingredients: e.target.value.split(',') })
+    this.setState({ ingredients: e.target.value })
   }
   render () {
     return (

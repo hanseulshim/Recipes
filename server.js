@@ -33,9 +33,10 @@ app.get('/getRecipes', (req, res) => {
 })
 
 app.post('/updateRecipe', (req, res) => {
-  let name = req.body.name
+  let searchName = req.body.searchName
+  let newName = req.body.newName
   let ingredients = req.body.ingredients
-  Recipebook.update({name: name}, {$set: { name: name, ingredients: ingredients }}, (err, data) =>
+  Recipebook.update({name: searchName}, {$set: { name: newName, ingredients: ingredients }}, (err, data) =>
     err ? console.log('Error in delete', err) : res.send(data)
   )
 })
