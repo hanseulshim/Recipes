@@ -26,5 +26,6 @@ export default class Recipe extends React.Component {
 
 Recipe.propTypes = {
   recipe: React.PropTypes.array.isRequired,
-  deleteRecipe: React.PropTypes.func.isRequired
+  deleteRecipe: React.PropTypes.func.isRequired,
+  editRecipe: React.PropTypes.func.isRequired
 }

@@ -15,8 +15,8 @@ export default class WindowContainer extends React.Component {
       showEdit: false
     }
 
-    this.close = this.close.bind(this)
     this.open = this.open.bind(this)
+    this.close = this.close.bind(this)
     this.handleChangeRecipe = this.handleChangeRecipe.bind(this)
     this.handleChangeIngredient = this.handleChangeIngredient.bind(this)
     this.addRecipe = this.addRecipe.bind(this)
@@ -37,6 +37,15 @@ export default class WindowContainer extends React.Component {
         console.log('Error in mounting', err)
       })
   }
+  open () {
+    this.setState({ showModal: true })
+  }
+  close () {
+    this.setState({
+      showModal: false,
+      showEdit: false
+    })
+  }
   addRecipe () {
     this.setState({
       showModal: false
@@ -55,15 +64,6 @@ export default class WindowContainer extends React.Component {
     .catch(err => {
       console.log('Error in add', err)
     })
-  }
-  close () {
-    this.setState({
-      showModal: false,
-      showEdit: false
-    })
-  }
-  open () {
-    this.setState({ showModal: true })
   }
   deleteRecipe (index) {
     let tempRecipe = this.state.recipe.slice()
@@ -119,16 +119,15 @@ export default class WindowContainer extends React.Component {
         <Window
           showModal={this.state.showModal}
           close={this.close}
-          addRecipe={this.addRecipe}
           handleChangeRecipe={this.handleChangeRecipe}
           handleChangeIngredient={this.handleChangeIngredient}
           buttonText="Add"
+          addRecipe={this.addRecipe}
         />
         {this.state.showEdit
           ? <Window
             showModal={this.state.showEdit}
             close={this.close}
-            addRecipe={this.addRecipe}
             handleChangeRecipe={this.handleChangeRecipe}
             handleChangeIngredient={this.handleChangeIngredient}
             buttonText="Edit"
