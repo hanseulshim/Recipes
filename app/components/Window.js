@@ -25,7 +25,7 @@ export default class Window extends React.Component {
           {
             this.props.buttonText === 'Add'
             ? <Button bsStyle="success" onClick={this.props.addRecipe}>Add</Button>
-            : <Button bsStyle="success" onClick={() => this.props.update(this.props.index)}>Update</Button>
+            : <Button bsStyle="success" onClick={() => this.props.updateRecipe(this.props.index)}>Update</Button>
           }
           <Button bsStyle="danger" onClick={this.props.close}>Cancel</Button>
         </Modal.Footer>
@@ -39,5 +39,10 @@ Window.propTypes = {
   close: React.PropTypes.func.isRequired,
   handleChangeIngredient: React.PropTypes.func.isRequired,
   handleChangeRecipe: React.PropTypes.func.isRequired,
-  addRecipe: React.PropTypes.func.isRequired
+  buttonText: React.PropTypes.string.isRequired,
+  addRecipe: React.PropTypes.func,
+  editTitle: React.PropTypes.string,
+  editIngredient: React.PropTypes.string,
+  updateRecipe: React.PropTypes.func,
+  index: React.PropTypes.number
 }
