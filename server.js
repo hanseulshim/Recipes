@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/addRecipe', (req, res) => {
-  let data = new Recipebook(req.body)
+  var data = new Recipebook(req.body)
   data.save((err, data) => {
     err ? console.log('Error in add', err) : res.send(data)
   })
@@ -33,16 +33,16 @@ app.get('/getRecipes', (req, res) => {
 })
 
 app.post('/updateRecipe', (req, res) => {
-  let searchName = req.body.searchName
-  let newName = req.body.newName
-  let ingredients = req.body.ingredients
+  var searchName = req.body.searchName
+  var newName = req.body.newName
+  var ingredients = req.body.ingredients
   Recipebook.update({name: searchName}, {$set: { name: newName, ingredients: ingredients }}, (err, data) =>
     err ? console.log('Error in delete', err) : res.send(data)
   )
 })
 
 app.post('/deleteRecipe', (req, res) => {
-  let name = req.body.name
+  var name = req.body.name
   Recipebook.find({name: name}).remove((err, data) =>
     err ? console.log('Error in delete', err) : res.send(data)
   )
