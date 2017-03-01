@@ -8,7 +8,7 @@ var Recipebook = require('./Recipebook.model')
 
 var db = 'mongodb://localhost/recipebook'
 
-mongoose.connect(process.env.MONGOLAB_URI || db)
+mongoose.connect(process.env.MONGODB_URI || db)
 
 app.use(express.static('./dist'))
 app.use(bodyParser.urlencoded({extended: false}))
